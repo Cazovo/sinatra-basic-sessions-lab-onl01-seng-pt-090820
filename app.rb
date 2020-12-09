@@ -1,42 +1,25 @@
-  
 require_relative 'config/environment'
 
 class App < Sinatra::Base
-  configure do
-    enable :sessions unless test?
-    set :session_secret, "secret"
-  end
-
-  before do
-    content_type :txt
-  end
-
-  get '/' do
-    "Welcome to Sinatra Sessions! In this lab, we will be learning about the general principles behind a sessions cookie. In order to proceed, let's go to the '/first_exercise' path."
-  end
-
-  get '/first_exercise' do
-    "Your first exercise will be to set your session key-value pair.\nIn the route: get '/set', write a line of code that sets the :foo key of the session hash equal to 'hello'.\nThen, navigate to the '/set' path."
-  end
-
-  get '/set' do
-    # set the :foo key of the session hash equal to 'hello' here!
-    session[:foo] = 'hello'
-    if session[:foo] == 'hello'
-      redirect '/fetch'
-    else
-      "Session value has not been set!"
+    
+    configure do
+        enable :sessions
+        set :session_secret, 'flatiron'
     end
-  end
 
-  get '/fetch' do
-    "You did it! session[:foo] value: #{session[:foo]}.\nMove on to Part II of this lab at '/second_exercise' "
-  end
 
-  get '/second_exercise' do
-    "Your second lesson will be to set your session :id key to a value.\nIn the route: /set_session, write a line of code that sets the session[:id] equal to 1.\nThen, navigate to the '/set_session' path"
-  end
+    get '/' do 
+        erb :index
+    end 
 
+    post '/checkout' do 
+        session[:item] = params[:item] 
+        @session = session
+        
+        erb :checkout
+    end 
+
+end
   get '/set_session' do
     #set session id here
     session[:id] = 1
